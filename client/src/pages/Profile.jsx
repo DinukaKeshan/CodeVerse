@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getProfile } from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { getProfile } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -9,19 +9,19 @@ const Profile = () => {
 
   useEffect(() => {
     getProfile()
-      .then(userData => {
+      .then((userData) => {
         setUser(userData);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('Error fetching user profile:', error);
+      .catch((error) => {
+        console.error("Error fetching user profile:", error);
         setLoading(false);
       });
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/';
+    localStorage.removeItem("token");
+    window.location.href = "/";
   };
 
   if (loading) {
@@ -44,7 +44,11 @@ const Profile = () => {
     <div className="max-w-md mx-auto mt-10 bg-white shadow-lg p-8 rounded-xl text-center border border-slate-200">
       {user.photoURL ? (
         <img
-          src={`http://localhost:5000${user.photoURL}`}
+          src={
+            user.photoURL?.startsWith("/uploads")
+              ? `http://localhost:5000${user.photoURL}`
+              : user.photoURL
+          }
           alt="Profile"
           className="w-32 h-32 rounded-full mx-auto mb-6 shadow-lg object-cover border-4 border-emerald-400"
         />
@@ -54,11 +58,13 @@ const Profile = () => {
         </div>
       )}
 
-      <h2 className="text-3xl font-bold mb-2 text-slate-800">{user.displayName}</h2>
+      <h2 className="text-3xl font-bold mb-2 text-slate-800">
+        {user.displayName}
+      </h2>
       <p className="text-slate-600 mb-4">{user.email}</p>
 
       <button
-        onClick={() => navigate('/profile/edit')}
+        onClick={() => navigate("/profile/edit")}
         className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-lg shadow transition duration-200"
       >
         Edit Profile
@@ -68,7 +74,7 @@ const Profile = () => {
         onClick={handleLogout}
         className="mt-4 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg shadow transition duration-200"
       >
-        Log Out b
+        Log Out
       </button>
     </div>
   );
