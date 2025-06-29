@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-import ProfileUpdate from './components/ProfileUpdate';
-import Callback from './pages/Callback';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import RoleSelection from './pages/RoleSelection';
-import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import ProfileUpdate from "./components/ProfileUpdate";
+import Callback from "./pages/Callback";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RoleSelection from "./pages/RoleSelection";
+import Navbar from "./components/Navbar";
+import InstructorDashboard from "./pages/InstructorDashboard";
+import CourseManage from "./pages/CourseManage";
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-role" element={<RoleSelection />} />
+
+        <Route path="/instructor" element={<InstructorDashboard />} />
+        <Route path="/manage-course/:courseId" element={<CourseManage />} />
       </Routes>
     </Router>
   );
