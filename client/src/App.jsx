@@ -1,3 +1,4 @@
+// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -8,8 +9,10 @@ import Register from "./pages/Register";
 import RoleSelection from "./pages/RoleSelection";
 import Navbar from "./components/Navbar";
 import InstructorDashboard from "./pages/InstructorDashboard";
-import CourseManage from "./pages/CourseManage";
 import InstructorCourses from "./pages/InstructorCourses";
+import CourseContent from "./pages/CourseContent";
+import CourseManage from "./pages/CourseManage";
+import TitleContent from "./pages/TitleContent"; // ✅ Import new component
 
 function App() {
   return (
@@ -25,7 +28,9 @@ function App() {
         <Route path="/select-role" element={<RoleSelection />} />
         <Route path="/instructor/courses" element={<InstructorCourses />} />
         <Route path="/dashboard/instructor" element={<InstructorDashboard />} />
+        <Route path="/course/:courseId" element={<CourseContent />} />
         <Route path="/manage-course/:courseId" element={<CourseManage />} />
+        <Route path="/course/:courseId/timeline/:timelineId" element={<TitleContent />} /> {/* ✅ New Route */}
       </Routes>
     </Router>
   );

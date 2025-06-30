@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { getMyCourses } from '../services/course';
 import { useNavigate } from 'react-router-dom';
 
+const fallbackImage = 'https://via.placeholder.com/600x200?text=No+Image';
+const BASE_URL = 'http://localhost:5000';
+
 const InstructorCourses = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
@@ -30,12 +33,17 @@ const InstructorCourses = () => {
             <div
               key={course._id}
               className="bg-white rounded shadow hover:shadow-md p-4 cursor-pointer transition"
-              onClick={() => navigate(`/manage-course/${course._id}`)}
+              onClick={() => navigate(`/course/${course._id}`)}
             >
               <img
-                src={course.bannerUrl}
+                src={
+                  course.bannerUrl.startsWith('/uploads')
+                    ? `${BASE_URL}${course.bannerUrl}`
+                    : course.bannerUrl
+                }
                 alt={course.title}
                 className="w-full h-40 object-cover rounded mb-2"
+                onError={(e) => (e.target.src = fallbackImage)}
               />
               <h4 className="text-lg font-bold">{course.title}</h4>
             </div>

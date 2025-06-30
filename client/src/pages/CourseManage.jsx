@@ -4,24 +4,10 @@ import { createTimelineItem, getTimeline } from '../services/timeline';
 
 const CourseManage = () => {
   const { courseId } = useParams();
-  const [timeline, setTimeline] = useState([]);
   const [title, setTitle] = useState('');
   const [videos, setVideos] = useState(['']);
   const [pdfs, setPdfs] = useState(['']);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchTimeline();
-  }, []);
-
-  const fetchTimeline = async () => {
-    try {
-      const data = await getTimeline(courseId);
-      setTimeline(data);
-    } catch (error) {
-      console.error('Failed to fetch timeline', error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +27,6 @@ const CourseManage = () => {
       setTitle('');
       setVideos(['']);
       setPdfs(['']);
-      fetchTimeline();
     } catch (err) {
       alert('Failed to add timeline item');
     } finally {
@@ -63,7 +48,6 @@ const CourseManage = () => {
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Manage Course Content</h2>
 
-      {/* Add Timeline Form */}
       <form onSubmit={handleSubmit} className="bg-white p-4 shadow rounded mb-6">
         <h3 className="text-lg font-semibold mb-2">Add Timeline Title</h3>
         <input
@@ -124,50 +108,6 @@ const CourseManage = () => {
           {loading ? 'Adding...' : 'Add Timeline Item'}
         </button>
       </form>
-
-      {/* Timeline Display */}
-      <h3 className="text-lg font-semibold mb-2">Timeline Items</h3>
-      {timeline.length === 0 ? (
-        <p className="text-gray-500">No timeline items yet.</p>
-      ) : (
-        <div className="space-y-4">
-          {timeline.map((item) => (
-            <div key={item._id} className="bg-white p-4 rounded shadow">
-              <h4 className="font-bold text-lg mb-2">{item.title}</h4>
-
-              {item.videos.length > 0 && (
-                <div className="mb-2">
-                  <p className="text-sm font-medium mb-1 text-gray-700">Videos:</p>
-                  <ul className="list-disc list-inside text-blue-600 space-y-1">
-                    {item.videos.map((v, i) => (
-                      <li key={i}>
-                        <a href={v} target="_blank" rel="noopener noreferrer">
-                          {v}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {item.pdfs.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-1 text-gray-700">PDFs:</p>
-                  <ul className="list-disc list-inside text-green-700 space-y-1">
-                    {item.pdfs.map((p, i) => (
-                      <li key={i}>
-                        <a href={p} target="_blank" rel="noopener noreferrer">
-                          {p}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
