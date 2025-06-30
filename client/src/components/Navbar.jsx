@@ -140,15 +140,27 @@ const Navbar = () => {
                 )}
               </Link>
               <Link
-                to="/courses"
+                to={
+                  user && user.role === "Instructor"
+                    ? "/instructor/courses"
+                    : "/courses"
+                }
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink("/courses")
+                  isActiveLink(
+                    user && user.role === "Instructor"
+                      ? "/instructor/courses"
+                      : "/courses"
+                  )
                     ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Courses</span>
-                {isActiveLink("/courses") && (
+                {isActiveLink(
+                  user && user.role === "Instructor"
+                    ? "/instructor/courses"
+                    : "/courses"
+                ) && (
                   <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
                 )}
               </Link>
@@ -166,15 +178,27 @@ const Navbar = () => {
                 )}
               </Link>
               <Link
-                to="/dashboard"
+                to={
+                  user && user.role === "Instructor"
+                    ? "/dashboard/instructor"
+                    : "/dashboard"
+                }
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink("/dashboard")
+                  isActiveLink(
+                    user && user.role === "Instructor"
+                      ? "/dashboard/instructor"
+                      : "/dashboard"
+                  )
                     ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Dashboard</span>
-                {isActiveLink("/dashboard") && (
+                {isActiveLink(
+                  user && user.role === "Instructor"
+                    ? "/dashboard/instructor"
+                    : "/dashboard"
+                ) && (
                   <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
                 )}
               </Link>
@@ -276,9 +300,17 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/courses"
+              to={
+                user && user.role === "Instructor"
+                  ? "/instructor/courses"
+                  : "/courses"
+              }
               className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink("/courses")
+                isActiveLink(
+                  user && user.role === "Instructor"
+                    ? "/instructor/courses"
+                    : "/courses"
+                )
                   ? "bg-white text-indigo-700 shadow-sm translate-x-2"
                   : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
               }`}
@@ -298,9 +330,17 @@ const Navbar = () => {
               Find Mentor
             </Link>
             <Link
-              to="/dashboard"
+              to={
+                user && user.role === "Instructor"
+                  ? "/dashboard/instructor"
+                  : "/dashboard"
+              }
               className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink("/dashboard")
+                isActiveLink(
+                  user && user.role === "Instructor"
+                    ? "/dashboard/instructor"
+                    : "/dashboard"
+                )
                   ? "bg-white text-indigo-700 shadow-sm translate-x-2"
                   : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
               }`}

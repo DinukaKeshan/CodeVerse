@@ -1,38 +1,59 @@
-import { useEffect, useState } from 'react';
-import { createCourse, getMyCourses } from '../services/course';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { createCourse } from '../services/course';
+import axios from 'axios';
 
 const InstructorDashboard = () => {
-  const [courses, setCourses] = useState([]);
   const [title, setTitle] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
+  const [bannerFile, setBannerFile] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  // Load instructor's courses on mount
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const fetchCourses = async () => {
-    try {
-      const data = await getMyCourses();
-      setCourses(data);
-    } catch (error) {
-      console.error('Failed to fetch courses', error);
+  // Handle file selection and preview
+  const handleBannerChange = (e) => {
+    const file = e.target.files[0];
+    setBannerFile(file);
+    if (file) {
+      setBannerPreview(URL.createObjectURL(file));
+    } else {
+      setBannerPreview('');
     }
+  };
+
+  // Upload image to server and return URL
+  const uploadBanner = async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const token = localStorage.getItem('token');
+    const res = await axios.post(
+      'http://localhost:5000/upload/image',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data.url;
   };
 
   const handleCreateCourse = async (e) => {
     e.preventDefault();
-    if (!title || !bannerUrl) return;
+    if (!title || (!bannerUrl && !bannerFile)) return;
 
     setLoading(true);
     try {
-      await createCourse({ title, bannerUrl });
+      let finalBannerUrl = bannerUrl;
+      if (bannerFile) {
+        finalBannerUrl = await uploadBanner(bannerFile);
+      }
+      await createCourse({ title, bannerUrl: finalBannerUrl });
       setTitle('');
       setBannerUrl('');
-      fetchCourses();
+      setBannerFile(null);
+      setBannerPreview('');
+      alert('Course created successfully!');
     } catch (error) {
       alert('Failed to create course');
     } finally {
@@ -57,13 +78,36 @@ const InstructorDashboard = () => {
           />
         </div>
         <div className="mb-2">
+          <label className="block mb-1 font-medium">Banner Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBannerChange}
+            className="mb-2"
+          />
+          <div className="text-sm text-gray-500 mb-2">or paste image URL below</div>
           <input
             type="text"
             placeholder="Banner Image URL"
             value={bannerUrl}
             onChange={(e) => setBannerUrl(e.target.value)}
             className="w-full border border-gray-300 px-3 py-2 rounded"
+            disabled={!!bannerFile}
           />
+          {bannerPreview && (
+            <img
+              src={bannerPreview}
+              alt="Banner Preview"
+              className="mt-2 w-full max-h-48 object-contain rounded border"
+            />
+          )}
+          {!bannerPreview && bannerUrl && (
+            <img
+              src={bannerUrl}
+              alt="Banner Preview"
+              className="mt-2 w-full max-h-48 object-contain rounded border"
+            />
+          )}
         </div>
         <button
           type="submit"
@@ -73,25 +117,6 @@ const InstructorDashboard = () => {
           {loading ? 'Creating...' : 'Create Course'}
         </button>
       </form>
-
-      {/* Course List */}
-      <h3 className="text-lg font-semibold mb-2">Your Courses</h3>
-      <div className="grid md:grid-cols-2 gap-4">
-        {courses.map((course) => (
-          <div
-            key={course._id}
-            className="bg-white rounded shadow hover:shadow-md p-4 cursor-pointer transition"
-            onClick={() => navigate(`/manage-course/${course._id}`)}
-          >
-            <img
-              src={course.bannerUrl}
-              alt={course.title}
-              className="w-full h-40 object-cover rounded mb-2"
-            />
-            <h4 className="text-lg font-bold">{course.title}</h4>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

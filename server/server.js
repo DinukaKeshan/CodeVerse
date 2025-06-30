@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
 
@@ -23,6 +24,27 @@ require('./config/passport');
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Multer setup for image upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
+  },
+});
+const upload = multer({ storage });
+
+// Image upload endpoint
+app.post('/upload/image', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+  const url = `/uploads/${req.file.filename}`;
+  res.json({ url });
+});
 
 // Routes
 app.use('/auth', require('./routes/auth.routes'));

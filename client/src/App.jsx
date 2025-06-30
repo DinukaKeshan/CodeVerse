@@ -9,6 +9,7 @@ import RoleSelection from "./pages/RoleSelection";
 import Navbar from "./components/Navbar";
 import InstructorDashboard from "./pages/InstructorDashboard";
 import CourseManage from "./pages/CourseManage";
+import InstructorCourses from "./pages/InstructorCourses";
 
 function App() {
   return (
@@ -22,8 +23,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-role" element={<RoleSelection />} />
-
-        <Route path="/instructor" element={<InstructorDashboard />} />
+        <Route path="/instructor/courses" element={<InstructorCourses />} />
+        <Route path="/dashboard/instructor" element={<InstructorDashboard />} />
         <Route path="/manage-course/:courseId" element={<CourseManage />} />
       </Routes>
     </Router>
