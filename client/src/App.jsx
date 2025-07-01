@@ -7,6 +7,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import RoleSelection from './pages/RoleSelection';
 import Navbar from './components/Navbar';
+import FindMentor from './pages/FindMentor';
+import Chat from './pages/Chat';
+import InstructorMessages from './pages/InstructorMessages';
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-role" element={<RoleSelection />} />
+        <Route path="/mentors" element={<FindMentor />} />
+        <Route path="/chat/:receiverId" element={<Chat />} />
+        <Route path="/instructor-messages" element={<InstructorMessages />} />
       </Routes>
     </Router>
   );
