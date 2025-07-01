@@ -1,5 +1,5 @@
 const Course = require('../models/course.model');
-const User = require('../models/user.model'); // Make sure this is imported
+const User = require('../models/user.model');
 
 // @desc Create a new course
 // @route POST /courses
@@ -68,11 +68,19 @@ exports.enrollInCourse = async (req, res) => {
   }
 };
 
-// @desc Get courses the student enrolled in
+// ✅ Updated: Get courses the student enrolled in with instructor info
 // @route GET /courses/enrolled
 exports.getEnrolledCourses = async (req, res) => {
   try {
-    const student = await User.findById(req.user._id).populate('enrolledCourses');
+    const student = await User.findById(req.user._id)
+      .populate({
+        path: 'enrolledCourses',
+        populate: {
+          path: 'instructor',
+          select: 'displayName',
+        },
+      });
+
     res.json(student.enrolledCourses);
   } catch (err) {
     console.error('Get Enrolled Courses Error:', err);

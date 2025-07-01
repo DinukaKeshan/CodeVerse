@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getTimeline } from '../services/timeline';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getTimeline } from "../services/timeline";
 
 const getYouTubeEmbedUrl = (url) => {
   try {
@@ -11,7 +11,7 @@ const getYouTubeEmbedUrl = (url) => {
       return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
     }
   } catch (err) {
-    console.error('Invalid YouTube URL', url);
+    console.error("Invalid YouTube URL", url);
   }
   return null;
 };
@@ -27,7 +27,7 @@ const TitleContent = () => {
         const found = all.find((t) => t._id === timelineId);
         setItem(found);
       } catch (error) {
-        console.error('Failed to load timeline item', error);
+        console.error("Failed to load timeline item", error);
       }
     };
     fetchItem();
@@ -54,7 +54,9 @@ const TitleContent = () => {
                   allowFullScreen
                 ></iframe>
               ) : (
-                <p key={i} className="text-red-500">Invalid YouTube URL</p>
+                <p key={i} className="text-red-500">
+                  Invalid YouTube URL
+                </p>
               );
             })}
           </div>
