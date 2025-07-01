@@ -49,6 +49,8 @@ app.post('/upload/image', upload.single('image'), (req, res) => {
 // Routes
 app.use('/auth', require('./routes/auth.routes'));
 app.use('/profile', require('./routes/profile.routes'));
+app.use('/instructors', require('./routes/instructor.routes'));
+app.use('/messages', require('./routes/message.routes'));
 
 app.use('/courses', require('./routes/course.routes'));
 app.use('/timeline', require('./routes/timeline.routes'));
