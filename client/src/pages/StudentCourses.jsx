@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function StudentCourses() {
   const [courses, setCourses] = useState([]);
   const [enrolledIds, setEnrolledIds] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -51,23 +53,33 @@ export default function StudentCourses() {
       <h2 className="text-2xl font-semibold mb-4">All Available Courses</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {courses.map(course => (
-          <div key={course._id} className="border rounded-xl shadow-md p-4">
+          <div
+            key={course._id}
+            className="border rounded-xl shadow-md p-4"
+          >
             <img
               src={course.bannerUrl?.startsWith('/uploads') ? `http://localhost:5000${course.bannerUrl}` : course.bannerUrl}
               alt={course.title}
               className="w-full h-40 object-cover rounded mb-3"
             />
             <h3 className="text-lg font-bold">{course.title}</h3>
-            <p className="text-sm text-gray-600">Instructor: {course.instructor?.displayName || 'Unknown'}</p>
-            <button
-              onClick={() => handleEnroll(course._id)}
-              disabled={enrolledIds.includes(course._id)}
-              className={`mt-3 px-4 py-2 rounded text-white ${
-                enrolledIds.includes(course._id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
-              }`}
-            >
-              {enrolledIds.includes(course._id) ? 'Enrolled' : 'Enroll'}
-            </button>
+            <p className="text-sm text-gray-600 mb-2">Instructor: {course.instructor?.displayName || 'Unknown'}</p>
+
+            {enrolledIds.includes(course._id) ? (
+              <button
+                onClick={() => navigate(`/lessons/${course._id}`)}
+                className="mt-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white w-full"
+              >
+                View Lessons
+              </button>
+            ) : (
+              <button
+                onClick={() => handleEnroll(course._id)}
+                className="mt-2 px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-700 text-white w-full"
+              >
+                Enroll
+              </button>
+            )}
           </div>
         ))}
       </div>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function StudentDashboard() {
   const [courses, setCourses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEnrolled = async () => {
@@ -28,7 +30,11 @@ export default function StudentDashboard() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {courses.map(course => (
-            <div key={course._id} className="border rounded-xl shadow-md p-4">
+            <div
+              key={course._id}
+              onClick={() => navigate(`/lessons/${course._id}`)}
+              className="border rounded-xl shadow-md p-4 cursor-pointer hover:shadow-lg transition"
+            >
               <img
                 src={course.bannerUrl?.startsWith('/uploads') ? `http://localhost:5000${course.bannerUrl}` : course.bannerUrl}
                 alt={course.title}

@@ -15,6 +15,8 @@ import CourseManage from "./pages/CourseManage";
 import TitleContent from "./pages/TitleContent";
 import StudentCourses from "./pages/StudentCourses";
 import StudentDashboard from "./pages/StudentDashboard";
+import Lessons from "./pages/Lessons"; // ✅ Import Lessons page
+import LessonContent from './pages/LessonContent';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/course/:courseId/timeline/:timelineId" element={<TitleContent />} />
         <Route path="/courses" element={<StudentCourses />} />
         <Route path="/dashboard" element={<StudentDashboard />} />
+        <Route path="/lessons/:courseId" element={<Lessons />} /> {/* ✅ Added Lessons route */}
+        <Route path="/course/:courseId/timeline/:timelineId" element={<LessonContent />} />
       </Routes>
     </Router>
   );
