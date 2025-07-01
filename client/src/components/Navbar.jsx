@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -34,23 +35,18 @@ const Navbar = () => {
 
   const RippleButton = ({ children, onClick, className }) => {
     const [ripples, setRipples] = useState([]);
-
     const handleClick = (e) => {
       const rect = e.currentTarget.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
       const x = e.clientX - rect.left - size / 2;
       const y = e.clientY - rect.top - size / 2;
-
       const newRipple = { x, y, size, id: Date.now() };
       setRipples([...ripples, newRipple]);
-
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, 600);
-
       if (onClick) onClick(e);
     };
-
     return (
       <button onClick={handleClick} className={`relative overflow-hidden ${className}`}>
         {children}
@@ -142,16 +138,18 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/mentor"
+                to="/mentors"
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink("/mentor")
+                  isActiveLink("/mentors")
                     ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Find Mentor</span>
-                {isActiveLink("/mentor") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
+                {isActiveLink("/mentors") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
+
+           
 
               <Link
                 to={dashboardLink}
@@ -234,18 +232,11 @@ const Navbar = () => {
           }`}
         >
           <div className="px-4 py-3 space-y-1 bg-gray-50 border-t border-gray-100">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
-              Home
-            </Link>
-            <Link to={courseLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
-              Courses
-            </Link>
-            <Link to="/mentor" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
-              Find Mentor
-            </Link>
-            <Link to={dashboardLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
-              Dashboard
-            </Link>
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">Home</Link>
+            <Link to={courseLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">Courses</Link>
+            <Link to="/mentors" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">Find Mentor</Link>
+            <Link to="/instructor-messages" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">Messages</Link>
+            <Link to={dashboardLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">Dashboard</Link>
 
             {user && (
               <button

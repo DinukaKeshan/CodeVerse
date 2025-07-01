@@ -8,15 +8,22 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RoleSelection from "./pages/RoleSelection";
 import Navbar from "./components/Navbar";
+
+// LMS (Instructor/Student)
 import InstructorDashboard from "./pages/InstructorDashboard";
 import InstructorCourses from "./pages/InstructorCourses";
 import CourseContent from "./pages/CourseContent";
 import CourseManage from "./pages/CourseManage";
-import TitleContent from "./pages/TitleContent"; // For instructor timeline editing
+import TitleContent from "./pages/TitleContent";
 import StudentCourses from "./pages/StudentCourses";
 import StudentDashboard from "./pages/StudentDashboard";
 import Lessons from "./pages/Lessons";
-import LessonContent from "./pages/LessonContent"; // For student lesson viewing
+import LessonContent from "./pages/LessonContent";
+
+// Mentor & Chat Features
+import FindMentor from "./pages/FindMentor";
+import Chat from "./pages/Chat";
+import InstructorMessages from "./pages/InstructorMessages";
 
 function App() {
   return (
@@ -32,19 +39,24 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/select-role" element={<RoleSelection />} />
 
-        {/* Instructor */}
+        {/* Instructor Routes */}
         <Route path="/instructor/courses" element={<InstructorCourses />} />
         <Route path="/dashboard/instructor" element={<InstructorDashboard />} />
         <Route path="/course/:courseId" element={<CourseContent />} />
         <Route path="/manage-course/:courseId" element={<CourseManage />} />
         <Route path="/course/:courseId/timeline/:timelineId" element={<TitleContent />} />
-        <Route path="/instructor/course/:courseId/timeline/:timelineId" element={<TitleContent />} /> {/* Instructor timeline editing */}
+        <Route path="/instructor/course/:courseId/timeline/:timelineId" element={<TitleContent />} />
 
-        {/* Student */}
+        {/* Student Routes */}
         <Route path="/courses" element={<StudentCourses />} />
         <Route path="/dashboard" element={<StudentDashboard />} />
-        <Route path="/lessons/:courseId" element={<Lessons />} /> {/* Student lessons list */}
-        <Route path="/lessons/:courseId/:timelineId" element={<LessonContent />} /> {/* Student lesson content */}
+        <Route path="/lessons/:courseId" element={<Lessons />} />
+        <Route path="/lessons/:courseId/:timelineId" element={<LessonContent />} />
+
+        {/* Mentor & Chat */}
+        <Route path="/mentors" element={<FindMentor />} />
+        <Route path="/chat/:receiverId" element={<Chat />} />
+        <Route path="/instructor-messages" element={<InstructorMessages />} />
       </Routes>
     </Router>
   );
