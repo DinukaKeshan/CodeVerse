@@ -149,17 +149,7 @@ const Navbar = () => {
                 {isActiveLink("/mentors") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
 
-              <Link
-                to="/instructor-messages"
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink("/instructor-messages")
-                    ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
-                }`}
-              >
-                <span className="relative z-10">Messages</span>
-                {isActiveLink("/instructor-messages") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
-              </Link>
+           
 
               <Link
                 to={dashboardLink}
