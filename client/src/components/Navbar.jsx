@@ -30,11 +30,8 @@ const Navbar = () => {
     }
   }, []);
 
-  const isActiveLink = (path) => {
-    return location.pathname === path;
-  };
+  const isActiveLink = (path) => location.pathname === path;
 
-  // Ripple effect component
   const RippleButton = ({ children, onClick, className }) => {
     const [ripples, setRipples] = useState([]);
 
@@ -48,19 +45,14 @@ const Navbar = () => {
       setRipples([...ripples, newRipple]);
 
       setTimeout(() => {
-        setRipples((prevRipples) =>
-          prevRipples.filter((ripple) => ripple.id !== newRipple.id)
-        );
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, 600);
 
       if (onClick) onClick(e);
     };
 
     return (
-      <button
-        onClick={handleClick}
-        className={`relative overflow-hidden ${className}`}
-      >
+      <button onClick={handleClick} className={`relative overflow-hidden ${className}`}>
         {children}
         {ripples.map((ripple) => (
           <span
@@ -77,6 +69,9 @@ const Navbar = () => {
       </button>
     );
   };
+
+  const courseLink = user?.role === "Instructor" ? "/instructor/courses" : "/courses";
+  const dashboardLink = user?.role === "Instructor" ? "/dashboard/instructor" : "/dashboard";
 
   return (
     <>
@@ -116,54 +111,36 @@ const Navbar = () => {
                     <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
                       LMS Platform
                     </h1>
-                    <p className="text-xs text-gray-500 -mt-1">
-                      Learn. Grow. Succeed.
-                    </p>
+                    <p className="text-xs text-gray-500 -mt-1">Learn. Grow. Succeed.</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
               <Link
                 to="/"
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink("/")
-                    ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
+                  isActiveLink("/") ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Home</span>
-                {isActiveLink("/") && (
-                  <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
-                )}
+                {isActiveLink("/") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
+
               <Link
-                to={
-                  user && user.role === "Instructor"
-                    ? "/instructor/courses"
-                    : "/courses"
-                }
+                to={courseLink}
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink(
-                    user && user.role === "Instructor"
-                      ? "/instructor/courses"
-                      : "/courses"
-                  )
+                  isActiveLink(courseLink)
                     ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Courses</span>
-                {isActiveLink(
-                  user && user.role === "Instructor"
-                    ? "/instructor/courses"
-                    : "/courses"
-                ) && (
-                  <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
-                )}
+                {isActiveLink(courseLink) && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
+
               <Link
                 to="/mentor"
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
@@ -173,41 +150,25 @@ const Navbar = () => {
                 }`}
               >
                 <span className="relative z-10">Find Mentor</span>
-                {isActiveLink("/mentor") && (
-                  <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
-                )}
+                {isActiveLink("/mentor") && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
+
               <Link
-                to={
-                  user && user.role === "Instructor"
-                    ? "/dashboard/instructor"
-                    : "/dashboard"
-                }
+                to={dashboardLink}
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                  isActiveLink(
-                    user && user.role === "Instructor"
-                      ? "/dashboard/instructor"
-                      : "/dashboard"
-                  )
+                  isActiveLink(dashboardLink)
                     ? "bg-indigo-50 text-indigo-700 shadow-sm scale-105"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:scale-105"
                 }`}
               >
                 <span className="relative z-10">Dashboard</span>
-                {isActiveLink(
-                  user && user.role === "Instructor"
-                    ? "/dashboard/instructor"
-                    : "/dashboard"
-                ) && (
-                  <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />
-                )}
+                {isActiveLink(dashboardLink) && <span className="absolute inset-0 bg-indigo-100 rounded-lg animate-pulse" />}
               </Link>
             </div>
 
             {/* User Section */}
             <div className="flex items-center space-x-4">
               {!loading && user ? (
-                // Logged-in User Profile
                 <button
                   onClick={() => navigate("/profile")}
                   className="flex items-center space-x-3 text-gray-700 hover:text-gray-900 focus:outline-none rounded-xl px-3 py-2 hover:bg-gray-50 transition-all duration-200 group transform active:scale-95"
@@ -216,7 +177,7 @@ const Navbar = () => {
                     {user.photoURL ? (
                       <img
                         src={
-                          user.photoURL?.startsWith("/uploads")
+                          user.photoURL.startsWith("/uploads")
                             ? `http://localhost:5000${user.photoURL}`
                             : user.photoURL
                         }
@@ -234,13 +195,10 @@ const Navbar = () => {
                     <p className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
                       {user.displayName || "User"}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {user.role || "Student"}
-                    </p>
+                    <p className="text-xs text-gray-500">{user.role || "Student"}</p>
                   </div>
                 </button>
               ) : (
-                // Guest State - Login/Register Buttons
                 <div className="flex items-center space-x-3">
                   <Link
                     to="/login"
@@ -258,128 +216,53 @@ const Navbar = () => {
                 </div>
               )}
 
-              {/* Mobile menu button */}
+              {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 transform active:scale-90"
               >
-                <div
-                  className={`transition-transform duration-300 ${
-                    mobileMenuOpen ? "rotate-180" : ""
-                  }`}
-                >
-                  {mobileMenuOpen ? (
-                    <FaTimes className="w-5 h-5" />
-                  ) : (
-                    <FaBars className="w-5 h-5" />
-                  )}
-                </div>
+                {mobileMenuOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Menu */}
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen
-              ? "max-h-96 opacity-100"
-              : "max-h-0 opacity-0 overflow-hidden"
+            mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
           }`}
         >
           <div className="px-4 py-3 space-y-1 bg-gray-50 border-t border-gray-100">
-            <Link
-              to="/"
-              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink("/")
-                  ? "bg-white text-indigo-700 shadow-sm translate-x-2"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
               Home
             </Link>
-            <Link
-              to={
-                user && user.role === "Instructor"
-                  ? "/instructor/courses"
-                  : "/courses"
-              }
-              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink(
-                  user && user.role === "Instructor"
-                    ? "/instructor/courses"
-                    : "/courses"
-                )
-                  ? "bg-white text-indigo-700 shadow-sm translate-x-2"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link to={courseLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
               Courses
             </Link>
-            <Link
-              to="/mentor"
-              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink("/mentor")
-                  ? "bg-white text-indigo-700 shadow-sm translate-x-2"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link to="/mentor" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
               Find Mentor
             </Link>
-            <Link
-              to={
-                user && user.role === "Instructor"
-                  ? "/dashboard/instructor"
-                  : "/dashboard"
-              }
-              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 transform active:scale-95 ${
-                isActiveLink(
-                  user && user.role === "Instructor"
-                    ? "/dashboard/instructor"
-                    : "/dashboard"
-                )
-                  ? "bg-white text-indigo-700 shadow-sm translate-x-2"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white hover:translate-x-2"
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link to={dashboardLink} onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 hover:bg-white rounded-lg">
               Dashboard
             </Link>
 
-            {/* Mobile User Profile Section */}
             {user && (
-              <div className="pt-3 mt-3 border-t border-gray-200">
-                <button
-                  onClick={() => {
-                    navigate("/profile");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg hover:bg-white transition-all duration-200 transform active:scale-95 hover:translate-x-2"
-                >
-                  <div className="relative">
-                    {user.photoURL ? (
-                      <img
-                        src={user.photoURL}
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
-                        <FaUserCircle className="text-white" size={20} />
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-semibold text-gray-800">
-                      {user.displayName || "User"}
-                    </p>
-                    <p className="text-xs text-gray-500">View Profile</p>
-                  </div>
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  navigate("/profile");
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg hover:bg-white"
+              >
+                <div className="w-8 h-8 bg-indigo-400 rounded-full flex items-center justify-center">
+                  <FaUserCircle className="text-white" size={20} />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-gray-800">{user.displayName || "User"}</p>
+                  <p className="text-xs text-gray-500">View Profile</p>
+                </div>
+              </button>
             )}
           </div>
         </div>

@@ -12,7 +12,9 @@ import InstructorDashboard from "./pages/InstructorDashboard";
 import InstructorCourses from "./pages/InstructorCourses";
 import CourseContent from "./pages/CourseContent";
 import CourseManage from "./pages/CourseManage";
-import TitleContent from "./pages/TitleContent"; // ✅ Import new component
+import TitleContent from "./pages/TitleContent";
+import StudentCourses from "./pages/StudentCourses";
+import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
   return (
@@ -30,7 +32,9 @@ function App() {
         <Route path="/dashboard/instructor" element={<InstructorDashboard />} />
         <Route path="/course/:courseId" element={<CourseContent />} />
         <Route path="/manage-course/:courseId" element={<CourseManage />} />
-        <Route path="/course/:courseId/timeline/:timelineId" element={<TitleContent />} /> {/* ✅ New Route */}
+        <Route path="/course/:courseId/timeline/:timelineId" element={<TitleContent />} />
+        <Route path="/courses" element={<StudentCourses />} />
+        <Route path="/dashboard" element={<StudentDashboard />} />
       </Routes>
     </Router>
   );
